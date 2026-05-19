@@ -1,0 +1,2 @@
+
+alias emacs='mamba run -n tools emacs'
