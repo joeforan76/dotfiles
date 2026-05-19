@@ -12,6 +12,8 @@ run_cmd () {
     echo "========================================"
 }
 
-run_cmd "mamba create -n tools emacs=30.2"
-run_cmd "cp -al ${DOTFILE_DIR}/dotemacs ${HOME}/.emacs.d"
+run_cmd "git submodule init && git submodule update"
+run_cmd "mamba create -y -n tools emacs=30.2"
+run_cmd "mkdir -p /${HOME}/.emacs.d"
+run_cmd "cp -al ${DOTFILE_DIR}/dotemacs/* ${HOME}/.emacs.d/"
 run_cmd "cat ${DOTFILE_DIR}/emacs_alias >> ~/.bash_aliases"
