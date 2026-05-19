@@ -1,0 +1,4 @@
+
+update_ssh_agent() {
+    eval "$(tmux show-environment -s SSH_AUTH_SOCK)"
+}
