@@ -1,2 +1,2 @@
-export PATH=$(realpath ./miniforge3/bin):$PATH
+export PATH=$(realpath ${HOME}/miniforge3/bin):$PATH
 eval "$(mamba shell hook --shell bash)"
