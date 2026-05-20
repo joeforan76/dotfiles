@@ -17,3 +17,6 @@ run_cmd "ln ${DOTFILE_DIR}/tmux/.tmux.conf ${HOME}"
 run_cmd "ln ${DOTFILE_DIR}/gitconfig/.gitconfig ${HOME}"
 
 run_cmd "cat ${DOTFILE_DIR}/bashrc_append >> ${HOME}/.bashrc"
+if [ -f /opt/rocm/bin/rocminfo ]; then
+    run_cmd "cat ${DOTFILE_DIR}/bashrc_rocm_path >> ${HOME}/.bashrc"
+fi
