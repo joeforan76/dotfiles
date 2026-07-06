@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ ! -z ${1+x} ]; then
+    JOB_NO=$1
+else
+    JOB_NO=$(squeue | tail -n 1 | awk '{print $1}')
+fi
+
+CMD="srun --jobid $JOB_NO --overlap --pty /bin/bash"
+
+echo $CMD
+
+eval "${CMD}"
