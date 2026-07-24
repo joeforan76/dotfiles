@@ -34,3 +34,23 @@ if command -v srun >/dev/null 2>&1; then
     prepend_to_path "${BINDIR}"
     run_cmd "cp ${DOTFILE_DIR}/slurm/jobshell ${BINDIR}"
 fi
+
+if [ "$(uname)" = "Darwin" ]; then
+    # macOS-specific lookup using Directory Services
+    default_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
+else
+    # Linux-specific lookup parsing the passwd database
+    default_shell=$(getent passwd "$USER" | cut -d: -f7)
+fi
+
+# Extract just the name (e.g., convert /bin/zsh to zsh)
+shell_name="${default_shell##*/}"
+
+# Use 'cat' to inject file contents, and target the home directory cleanly
+if [ "$shell_name" = "bash" ]; then
+    cat ./bash_prompt >> "$HOME/.bashrc"
+elif [ "$shell_name" = "zsh" ]; then
+    cat ./zsh_prompt >> "$HOME/.zshrc"
+else
+    echo "Unknown default shell: $shell_name"
+fi
