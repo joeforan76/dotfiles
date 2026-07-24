@@ -18,7 +18,7 @@ parse_git_status() {
             status_color="\[\033[31m\]"
         fi
 
-        echo -e " on \[\033[35m\]$branch$status_color$status_symbol"
+        echo -e " on \[\033[35m\]$branch$status_color$status_symbol\[\033[0m\]"
     fi
 }
 
