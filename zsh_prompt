@@ -1,0 +1,36 @@
+setopt PROMPT_SUBST
+
+parse_git_status() {
+    # Check if inside a git repository
+    if git rev-parse --is-inside-work-tree &>/dev/null; then
+        # Get current branch name
+        local branch
+        branch=$(git branch --show-current 2>/dev/null)
+        [[ -z "$branch" ]] && branch=$(git rev-parse --short HEAD 2>/dev/null)
+
+        # Check for dirty status (staged, unstaged, or untracked changes)
+        local status_symbol="✔"
+        local status_color="%F{green}"
+        
+        if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null || [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+            status_symbol="✘"
+            status_color="%F{red}"
+        fi
+
+        echo " on %F{magenta}${branch}${status_color}${status_symbol}%f"
+    fi
+}
+
+get_venv() {
+    # Detect active Python virtual environment
+    if [[ -n "$VIRTUAL_ENV_PROMPT" ]]; then
+        echo "(%F{cyan}"$VIRTUAL_ENV_PROMPT"%f) "
+    fi
+}
+
+# Construct the prompt dynamically before each prompt display
+# %~ automatically shows relative to home (~), or absolute path if outside home
+precmd() {
+    PROMPT='$(get_venv)%F{blue}%~%f$(parse_git_status)
+%# '
+}
